@@ -710,23 +710,37 @@ struct NoteItem: Codable, Identifiable, Defaults.Serializable, Hashable {
     var title: String
     var content: String
     var creationDate: Date
+    var modificationDate: Date
     var colorIndex: Int // 0: Yellow, 1: Blue, 2: Red, 3: Green
     var isPinned: Bool = false
     var imageFileName: String? = nil // Store filename instead of raw data
+    var appleNotesId: String? = nil
     
     // Internal property for migration
     private enum CodingKeys: String, CodingKey {
-        case id, title, content, creationDate, colorIndex, isPinned, imageFileName, imageData
+        case id, title, content, creationDate, modificationDate, colorIndex, isPinned, imageFileName, imageData, appleNotesId
     }
     
-    init(id: UUID = UUID(), title: String, content: String, creationDate: Date, colorIndex: Int, isPinned: Bool = false, imageFileName: String? = nil) {
+    init(
+        id: UUID = UUID(),
+        title: String,
+        content: String,
+        creationDate: Date,
+        modificationDate: Date? = nil,
+        colorIndex: Int,
+        isPinned: Bool = false,
+        imageFileName: String? = nil,
+        appleNotesId: String? = nil
+    ) {
         self.id = id
         self.title = title
         self.content = content
         self.creationDate = creationDate
+        self.modificationDate = modificationDate ?? creationDate
         self.colorIndex = colorIndex
         self.isPinned = isPinned
         self.imageFileName = imageFileName
+        self.appleNotesId = appleNotesId
     }
     
     init(from decoder: Decoder) throws {
@@ -735,8 +749,10 @@ struct NoteItem: Codable, Identifiable, Defaults.Serializable, Hashable {
         title = try container.decode(String.self, forKey: .title)
         content = try container.decode(String.self, forKey: .content)
         creationDate = try container.decode(Date.self, forKey: .creationDate)
+        modificationDate = try container.decodeIfPresent(Date.self, forKey: .modificationDate) ?? creationDate
         colorIndex = try container.decode(Int.self, forKey: .colorIndex)
         isPinned = try container.decode(Bool.self, forKey: .isPinned)
+        appleNotesId = try container.decodeIfPresent(String.self, forKey: .appleNotesId)
         
         // Migration logic: if imageData exists but imageFileName doesn't, save it to disk
         if let data = try container.decodeIfPresent(Data.self, forKey: .imageData) {
@@ -755,9 +771,11 @@ struct NoteItem: Codable, Identifiable, Defaults.Serializable, Hashable {
         try container.encode(title, forKey: .title)
         try container.encode(content, forKey: .content)
         try container.encode(creationDate, forKey: .creationDate)
+        try container.encode(modificationDate, forKey: .modificationDate)
         try container.encode(colorIndex, forKey: .colorIndex)
         try container.encode(isPinned, forKey: .isPinned)
         try container.encode(imageFileName, forKey: .imageFileName)
+        try container.encodeIfPresent(appleNotesId, forKey: .appleNotesId)
     }
     
     static let colors: [Color] = [.yellow, .blue, .red, .green, .purple, .orange]
@@ -790,7 +808,7 @@ extension Defaults.Keys {
     static let menubarIcon = Key<Bool>("menubarIcon", default: true)
     static let showOnAllDisplays = Key<Bool>("showOnAllDisplays", default: false)
     static let automaticallySwitchDisplay = Key<Bool>("automaticallySwitchDisplay", default: true)
-    static let releaseName = Key<String>("releaseName", default: "Seychelles")
+    static let releaseName = Key<String>("releaseName", default: "Fiji")
     static let hideDynamicIslandFromScreenCapture = Key<Bool>("hideDynamicIslandFromScreenCapture", default: false)
     
         // MARK: Behavior
@@ -955,6 +973,7 @@ extension Defaults.Keys {
     static let showPowerStatusNotifications = Key<Bool>("showPowerStatusNotifications", default: true)
     static let showBatteryIndicator = Key<Bool>("showBatteryIndicator", default: BatteryActivityManager.shared.hasBattery())
     static let showBatteryPercentage = Key<Bool>("showBatteryPercentage", default: true)
+    static let showBatteryPercentInside = Key<Bool>("showBatteryPercentInside", default: true)
     static let showPowerStatusIcons = Key<Bool>("showPowerStatusIcons", default: true)
     static let playLowBatteryAlertSound = Key<Bool>("playLowBatteryAlertSound", default: true)
     static let showChargingBatteryHUD = Key<Bool>("showChargingBatteryHUD", default: true)
@@ -1074,6 +1093,8 @@ extension Defaults.Keys {
     static let timerShowsProgress = Key<Bool>("timerShowsProgress", default: true)
     static let timerProgressStyle = Key<TimerProgressStyle>("timerProgressStyle", default: .bar)
     static let mirrorSystemTimer = Key<Bool>("mirrorSystemTimer", default: true)
+    static let timerInputStyle = Key<TimerInputStyle>("timerInputStyle", default: .manual)
+    
     
     // MARK: Reminder Live Activity
     static let enableReminderLiveActivity = Key<Bool>("enableReminderLiveActivity", default: true)
@@ -1240,6 +1261,8 @@ extension Defaults.Keys {
     static let enableCreateFromClipboard = Key<Bool>("enableCreateFromClipboard", default: true)
     static let enableNoteCharCount = Key<Bool>("enableNoteCharCount", default: true)
     static let savedNotes = Key<[NoteItem]>("savedNotes", default: [])
+    static let enableAppleNotesSync = Key<Bool>("enableAppleNotesSync", default: false)
+    static let appleNotesLastSyncDate = Key<Date?>("appleNotesLastSyncDate", default: nil)
     
     // MARK: - WhatsApp Settings
     static let whatsAppEnabled = Key<Bool>("whatsAppEnabled", default: false)
@@ -1336,4 +1359,5 @@ extension Defaults.Keys {
         let fallback = MusicAuxiliaryControl.alternative(excluding: current)
         Defaults[.musicAuxRightControl] = fallback
     }
+    static let showSongMetadataInClosedNotch = Key<Bool>("showSongMetadataInClosedNotch", default: false)
 }
