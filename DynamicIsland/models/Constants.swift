@@ -1241,6 +1241,10 @@ extension Defaults.Keys {
     static let enableNoteCharCount = Key<Bool>("enableNoteCharCount", default: true)
     static let savedNotes = Key<[NoteItem]>("savedNotes", default: [])
     
+    // MARK: - WhatsApp Settings
+    static let whatsAppEnabled = Key<Bool>("whatsAppEnabled", default: false)
+    
+    
     // Helper to determine the default media controller based on macOS version
     static var defaultMediaController: MediaControllerType {
         if #available(macOS 15.4, *) {
