@@ -292,6 +292,10 @@ struct MusicControlsView: View {
     private let seekInterval: TimeInterval = 10
     private let skipMagnitude: CGFloat = 6
 
+    private var isDynamicIslandMode: Bool {
+        shouldUseDynamicIslandMode(for: vm.screen)
+    }
+
     var body: some View {
         VStack(alignment: .leading) {
             songInfoAndSlider
@@ -403,6 +407,7 @@ struct MusicControlsView: View {
                 slotView(for: slot)
             }
         }
+        .padding(.top, isDynamicIslandMode ? 10 : 0)
         .frame(maxWidth: .infinity, alignment: .center)
     }
 
