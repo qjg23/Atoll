@@ -1266,6 +1266,7 @@ extension Defaults.Keys {
     
     // MARK: - WhatsApp Settings
     static let whatsAppEnabled = Key<Bool>("whatsAppEnabled", default: false)
+    static let isWhatsAppAnimEnabled = Key<Bool>("isWhatsAppAnimEnabled", default: false)
     
     
     // Helper to determine the default media controller based on macOS version
