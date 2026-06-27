@@ -37,7 +37,19 @@
 </p>
 
 > [!IMPORTANT]
-> ## 🎵 This is a community fork — adds **QQ 音乐 (QQ Music)** support
+> ## 🎵 社区 fork — 新增 **QQ 音乐** 支持 (community fork with QQ Music support)
+>
+> **中文：** 本 fork 给 Atoll 增加了 **QQ 音乐** 媒体源。QQ 音乐 Mac 版没有
+> AppleScript 接口，因此走 macOS 系统**“正在播放”(Now Playing)** 通道（和
+> Atoll 适配 Amazon Music 的方式一致）：只有当 QQ 音乐是当前系统播放源时才显示
+> 歌曲/封面和播放控制，否则自动隐藏。若 QQ 音乐不支持远程拖动，进度条拖拽可能无效。
+>
+> 📦 **下载：** 在本仓库的 [Releases](../../releases) 里取最新的
+> `Atoll-QQ-x.x.x.dmg`。安装包由 GitHub Actions 跟随上游自动构建。由于是
+> **ad-hoc 签名**（没有付费开发者证书），首次打开请**右键 App → 打开**绕过
+> Gatekeeper。
+>
+> ---
 >
 > **English:** This fork adds QQ Music as a selectable media source in Atoll's
 > settings. QQ Music for Mac has no AppleScript API, so it's driven through the
@@ -54,26 +66,14 @@
 >
 > ---
 >
-> **中文：** 本 fork 给 Atoll 增加了 **QQ 音乐** 媒体源。QQ 音乐 Mac 版没有
-> AppleScript 接口，因此走 macOS 系统**“正在播放”(Now Playing)** 通道（和
-> Atoll 适配 Amazon Music 的方式一致）：只有当 QQ 音乐是当前系统播放源时才显示
-> 歌曲/封面和播放控制，否则自动隐藏。若 QQ 音乐不支持远程拖动，进度条拖拽可能无效。
->
-> 📦 **下载：** 在本仓库的 [Releases](../../releases) 里取最新的
-> `Atoll-QQ-x.x.x.dmg`。安装包由 GitHub Actions 跟随上游自动构建。由于是
-> **ad-hoc 签名**（没有付费开发者证书），首次打开请**右键 App → 打开**绕过
-> Gatekeeper。
->
-> ---
+> 🙏 **QQ 音乐适配由 [@qjg23](https://github.com/qjg23) 制作。** Atoll 本体的全部功劳
+> 归上游作者 **[Ebullioscopic/Atoll](https://github.com/Ebullioscopic/Atoll)**；本 fork
+> 仅增加 QQ 音乐集成，沿用 **GPL-3.0** 许可。
 >
 > 🙏 **QQ Music integration by [@qjg23](https://github.com/qjg23).**
 > All credit for Atoll itself goes to the upstream authors
 > **[Ebullioscopic/Atoll](https://github.com/Ebullioscopic/Atoll)**. This fork only
 > adds the QQ Music integration and stays under the same **GPL-3.0** license.
->
-> 🙏 **QQ 音乐适配由 [@qjg23](https://github.com/qjg23) 制作。** Atoll 本体的全部功劳
-> 归上游作者 **[Ebullioscopic/Atoll](https://github.com/Ebullioscopic/Atoll)**；本 fork
-> 仅增加 QQ 音乐集成，沿用 **GPL-3.0** 许可。
 
 Atoll turns the MacBook notch into a focused command surface for media, system insight, and quick utilities. It stays out of the way until needed, then expands with responsive, native SwiftUI animations.
 
