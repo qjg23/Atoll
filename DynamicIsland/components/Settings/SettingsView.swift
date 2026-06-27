@@ -2738,6 +2738,8 @@ struct HUD: View {
 struct Media: View {
     @Default(.waitInterval) var waitInterval
     @Default(.mediaController) var mediaController
+    @Default(.customMediaBundleID) var customMediaBundleID
+    @State private var runningAppsRefreshToken = 0
     @ObservedObject var coordinator = DynamicIslandViewCoordinator.shared
     @Default(.hideNotchOption) var hideNotchOption
     @Default(.enableSneakPeek) private var enableSneakPeek
@@ -2771,6 +2773,30 @@ struct Media: View {
         !showStandardMediaControls && !enableMinimalisticUI
     }
 
+    /// Running, user-facing apps offered as targets for the "Custom App" media source.
+    /// The currently-saved bundle id is always included so the selection is never lost
+    /// even if that app isn't running right now.
+    private var customAppOptions: [(name: String, bundleID: String)] {
+        var seen = Set<String>()
+        var options: [(name: String, bundleID: String)] = NSWorkspace.shared.runningApplications
+            .filter { $0.activationPolicy == .regular }
+            .compactMap { app in
+                guard let bundleID = app.bundleIdentifier, !bundleID.isEmpty else { return nil }
+                let name = app.localizedName ?? bundleID
+                return (name, bundleID)
+            }
+            .filter { seen.insert($0.bundleID).inserted }
+            .sorted { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+
+        if !customMediaBundleID.isEmpty, !seen.contains(customMediaBundleID) {
+            let savedName = NSWorkspace.shared.runningApplications
+                .first { $0.bundleIdentifier == customMediaBundleID }?.localizedName
+            options.insert((savedName ?? customMediaBundleID, customMediaBundleID), at: 0)
+        }
+
+        return options
+    }
+
     var body: some View {
         Form {
             Section {
@@ -2802,6 +2828,41 @@ struct Media: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(String(localized: "'Now Playing' was the only option on previous versions and works with all media apps."))
                         Text(String(localized: "Uses macOS Now Playing when the Amazon Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the Amazon Music app does not support remote seek."))
+                    }
+                    .foregroundStyle(.secondary)
+                    .font(.caption)
+                }
+            }
+
+            if mediaController == .custom {
+                Section {
+                    Picker("Target App", selection: $customMediaBundleID) {
+                        if customMediaBundleID.isEmpty {
+                            Text("Select an app…").tag("")
+                        }
+                        ForEach(customAppOptions, id: \.bundleID) { option in
+                            Text(option.name).tag(option.bundleID)
+                        }
+                    }
+                    .id(runningAppsRefreshToken)
+                    .onChange(of: customMediaBundleID) { _, _ in
+                        NotificationCenter.default.post(
+                            name: Notification.Name.mediaControllerChanged,
+                            object: nil
+                        )
+                    }
+
+                    Button("Refresh app list") {
+                        runningAppsRefreshToken &+= 1
+                    }
+                } header: {
+                    Text("Custom App")
+                } footer: {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(String(localized: "Pick any running app. Atoll shows it while that app owns the system Now Playing session, like the Apple Music / Spotify sources. Any app that reports to macOS Now Playing works; scrubbing may not work if the app does not support remote seek."))
+                        if !customMediaBundleID.isEmpty {
+                            Text(verbatim: customMediaBundleID).foregroundStyle(.tertiary)
+                        }
                     }
                     .foregroundStyle(.secondary)
                     .font(.caption)
