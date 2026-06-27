@@ -97797,7 +97797,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "当 Amazon Music 应用是活动媒体源时使用 macOS 正在播放。播放控制遵循系统正在播放目标。如果 Amazon Music 应用不支持远程拖拽，在时间轴上拖动可能无效。"
+            "value": "当 Amazon Music 是当前媒体来源时，使用 macOS“正在播放”。播放控制会作用于系统当前的“正在播放”对象。如果 Amazon Music 不支持远程拖动，进度条拖拽可能无效。"
           }
         },
         "th": {
@@ -102241,6 +102241,118 @@
           "stringUnit": {
             "state": "translated",
             "value": "Open Privacy en beveiliging"
+          }
+        }
+      }
+    },
+    "Custom App": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Custom App"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自定义应用"
+          }
+        }
+      }
+    },
+    "Target App": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Target App"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目标应用"
+          }
+        }
+      }
+    },
+    "Refresh app list": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Refresh app list"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刷新应用列表"
+          }
+        }
+      }
+    },
+    "Select an app…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select an app…"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择一个应用…"
+          }
+        }
+      }
+    },
+    "Uses macOS Now Playing when the QQ Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the QQ Music app does not support remote seek.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses macOS Now Playing when the QQ Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the QQ Music app does not support remote seek."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当 QQ 音乐是当前媒体来源时，使用 macOS“正在播放”。播放控制会作用于系统当前的“正在播放”对象。如果 QQ 音乐不支持远程拖动，进度条拖拽可能无效。"
+          }
+        }
+      }
+    },
+    "Pick any running app to track via macOS Now Playing. Works with any app that reports to the system Now Playing center. Choose the target app in Settings → Media.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick any running app to track via macOS Now Playing. Works with any app that reports to the system Now Playing center. Choose the target app in Settings → Media."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择任意正在运行的应用，通过 macOS“正在播放”进行追踪。适用于任何会向系统“正在播放”中心上报的应用。在“设置 → 媒体”中选择目标应用。"
+          }
+        }
+      }
+    },
+    "Pick any running app. Atoll shows it while that app owns the system Now Playing session, like the Apple Music / Spotify sources. Any app that reports to macOS Now Playing works; scrubbing may not work if the app does not support remote seek.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pick any running app. Atoll shows it while that app owns the system Now Playing session, like the Apple Music / Spotify sources. Any app that reports to macOS Now Playing works; scrubbing may not work if the app does not support remote seek."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择任意正在运行的应用。当该应用占用系统“正在播放”会话时，Atoll 就会显示它（与 Apple Music / Spotify 来源一样）。任何会向 macOS“正在播放”上报的应用都可用；若该应用不支持远程拖动，进度条拖拽可能无效。"
           }
         }
       }

@@ -2826,7 +2826,9 @@ struct Media: View {
                     }
                 } else {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text(String(localized: "'Now Playing' was the only option on previous versions and works with all media apps."))
+                        if mediaController == .nowPlaying {
+                            Text(String(localized: "'Now Playing' was the only option on previous versions and works with all media apps."))
+                        }
                         Text(mediaController.description)
                     }
                     .foregroundStyle(.secondary)
