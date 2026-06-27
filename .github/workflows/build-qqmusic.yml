@@ -18,10 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Select Xcode 16
+      # Xcode 26 is required: the upstream asset catalog contains an SF Symbols 7
+      # symbol (template format 7.0) that older actool versions cannot compile.
+      - name: Select latest Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: '16'
+          xcode-version: latest-stable
+
+      - name: Print Xcode version
+        run: xcodebuild -version
+
+      # Xcode 26 ships the Metal toolchain as a separately downloadable component,
+      # needed for the .metal shaders (SwiftTerm dependency + app visualizer).
+      - name: Download Metal toolchain
+        run: xcodebuild -downloadComponent MetalToolchain || true
 
       - name: Build (ad-hoc signed)
         run: |
