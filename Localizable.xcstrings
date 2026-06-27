@@ -102309,22 +102309,6 @@
         }
       }
     },
-    "Uses macOS Now Playing when the QQ Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the QQ Music app does not support remote seek.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uses macOS Now Playing when the QQ Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the QQ Music app does not support remote seek."
-          }
-        },
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "当 QQ 音乐是当前媒体来源时，使用 macOS“正在播放”。播放控制会作用于系统当前的“正在播放”对象。如果 QQ 音乐不支持远程拖动，进度条拖拽可能无效。"
-          }
-        }
-      }
-    },
     "Pick any running app to track via macOS Now Playing. Works with any app that reports to the system Now Playing center. Choose the target app in Settings → Media.": {
       "localizations": {
         "en": {
@@ -102353,6 +102337,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "选择任意正在运行的应用。当该应用占用系统“正在播放”会话时，Atoll 就会显示它（与 Apple Music / Spotify 来源一样）。任何会向 macOS“正在播放”上报的应用都可用；若该应用不支持远程拖动，进度条拖拽可能无效。"
+          }
+        }
+      }
+    },
+    "Uses macOS Now Playing when the QQ Music app is the active media source. Playback (including play/pause, track skip, and timeline scrubbing) is controlled through the system Now Playing target.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Uses macOS Now Playing when the QQ Music app is the active media source. Playback (including play/pause, track skip, and timeline scrubbing) is controlled through the system Now Playing target."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当 QQ 音乐是当前媒体来源时，使用 macOS“正在播放”。播放（包括播放/暂停、切歌、进度条拖动）通过系统当前的“正在播放”对象进行控制。"
           }
         }
       }

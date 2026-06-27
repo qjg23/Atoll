@@ -146,7 +146,7 @@ extension MediaControllerType {
         case .amazonMusic:
             return String(localized: "Uses macOS Now Playing when the Amazon Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the Amazon Music app does not support remote seek.")
         case .qqMusic:
-            return String(localized: "Uses macOS Now Playing when the QQ Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the QQ Music app does not support remote seek.")
+            return String(localized: "Uses macOS Now Playing when the QQ Music app is the active media source. Playback (including play/pause, track skip, and timeline scrubbing) is controlled through the system Now Playing target.")
         case .custom:
             return String(localized: "Pick any running app to track via macOS Now Playing. Works with any app that reports to the system Now Playing center. Choose the target app in Settings → Media.")
         }
