@@ -2827,7 +2827,7 @@ struct Media: View {
                 } else {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(String(localized: "'Now Playing' was the only option on previous versions and works with all media apps."))
-                        Text(String(localized: "Uses macOS Now Playing when the Amazon Music app is the active media source. Playback controls follow the system Now Playing target. Scrubbing the timeline may not work if the Amazon Music app does not support remote seek."))
+                        Text(mediaController.description)
                     }
                     .foregroundStyle(.secondary)
                     .font(.caption)
