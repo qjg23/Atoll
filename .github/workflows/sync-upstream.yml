@@ -1,0 +1,60 @@
+name: Sync upstream
+
+on:
+  schedule:
+    - cron: '0 18 * * *'   # daily ~02:00 Beijing time
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (full history)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Merge upstream/main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git remote add upstream https://github.com/Ebullioscopic/Atoll.git
+          git fetch upstream main
+
+          if git merge --no-edit upstream/main; then
+            if [ -n "$(git log origin/main..HEAD --oneline)" ]; then
+              echo "Upstream changes merged; pushing and triggering build."
+              git push origin main
+              gh workflow run build-qqmusic.yml --ref main
+            else
+              echo "Already up to date with upstream; nothing to build."
+            fi
+          else
+            echo "Merge conflict — aborting and opening an issue."
+            git merge --abort
+            EXISTING=$(gh issue list --state open --search "in:title 上游同步冲突" --json number --jq '.[0].number // empty')
+            if [ -z "$EXISTING" ]; then
+              gh issue create \
+                --title "⚠️ 上游同步冲突，需手动合并 (upstream sync conflict)" \
+                --body "自动合并 \`upstream/main\` 失败，通常是 \`MediaControllerType\` 枚举那行的冲突。
+
+          请在本地解决：
+          \`\`\`
+          git fetch upstream
+          git merge upstream/main      # 解决冲突，保留 .qqMusic 那几行
+          git push origin main
+          \`\`\`
+          推送后会自动重新构建。"
+            else
+              echo "Conflict issue #$EXISTING already open; not duplicating."
+            fi
+            exit 1
+          fi

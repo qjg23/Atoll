@@ -1,0 +1,73 @@
+name: Build QQ Music DMG
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '**/*.md'
+      - '.github/workflows/sync-upstream.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 16
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '16'
+
+      - name: Build (ad-hoc signed)
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project DynamicIsland.xcodeproj \
+            -scheme DynamicIsland \
+            -configuration Release \
+            -derivedDataPath build \
+            CODE_SIGN_IDENTITY="-" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="" \
+            -destination 'generic/platform=macOS' \
+            clean build
+
+      - name: Package DMG
+        run: |
+          set -euo pipefail
+          brew install create-dmg
+          APP="build/Build/Products/Release/Atoll.app"
+          if [ ! -d "$APP" ]; then
+            echo "ERROR: $APP not found"; ls -R build/Build/Products/Release || true; exit 1
+          fi
+          VER=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" "$APP/Contents/Info.plist")
+          DMG="Atoll-QQ-${VER}.dmg"
+          # create-dmg returns non-zero on benign AppleScript styling warnings; guard it.
+          create-dmg --volname "Atoll QQ Music" --window-size 540 380 \
+            --icon "Atoll.app" 140 190 --app-drop-link 400 190 \
+            "$DMG" "$APP" || true
+          if [ ! -f "$DMG" ]; then
+            echo "create-dmg styling step failed; falling back to plain DMG"
+            hdiutil create -volname "Atoll QQ Music" -srcfolder "$APP" -ov -format UDZO "$DMG"
+          fi
+          echo "VER=$VER" >> "$GITHUB_ENV"
+          echo "DMG=$DMG" >> "$GITHUB_ENV"
+
+      - name: Publish Release
+        run: |
+          set -euo pipefail
+          TAG="qq-v${VER}-build${{ github.run_number }}"
+          gh release create "$TAG" "$DMG" \
+            --title "Atoll QQ Music ${VER} (build ${{ github.run_number }})" \
+            --notes "Auto-built from \`main\` (upstream ${VER} + QQ Music integration by @qjg23).
+
+          **Ad-hoc signed** — on first launch, right-click the app → Open to get past Gatekeeper, or run \`xattr -dr com.apple.quarantine /Applications/Atoll.app\`.
+
+          QQ Music support: pick **QQ Music** as the media source in Atoll settings; it shows while QQ Music owns the system Now Playing session."
+        env:
+          GH_TOKEN: ${{ github.token }}
