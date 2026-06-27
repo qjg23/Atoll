@@ -576,6 +576,17 @@ class MusicManager: ObservableObject {
             }
             .store(in: &cancellables)
 
+        // Rebuild the controller when the user changes the custom target app,
+        // but only while the "Custom App" source is the active preference.
+        Defaults.publisher(.customMediaBundleID)
+            .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self, Defaults[.mediaController] == .custom else { return }
+                self.isPearDesktopAutoSwitched = false
+                self.setActiveControllerBasedOnPreference()
+            }
+            .store(in: &cancellables)
+
         // Observe Pear Desktop launch/terminate for auto-detection
         setupPearDesktopAutoDetection()
 
@@ -681,6 +692,8 @@ class MusicManager: ObservableObject {
             newController = YouTubeMusicController()
         case .amazonMusic:
             newController = AmazonMusicController()
+        case .custom:
+            newController = CustomNowPlayingController(bundleID: Defaults[.customMediaBundleID])
         }
 
         // Set up state observation for the new controller
@@ -1724,6 +1737,8 @@ extension MusicManager {
             return spotifyGreen
         case .amazonMusic:
             return amazonOrange
+        case .custom:
+            return .accentColor
         case .nowPlaying:
             if let bundleIdentifier,
                let bundleColor = brandAccentColor(forBundleIdentifier: bundleIdentifier) {

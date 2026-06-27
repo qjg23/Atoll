@@ -406,9 +406,10 @@ enum MediaControllerType: String, CaseIterable, Identifiable, Defaults.Serializa
     case spotify = "Spotify"
     case youtubeMusic = "Youtube Music"
     case amazonMusic = "Amazon Music"
-    
+    case custom = "Custom App"
+
     var id: String { self.rawValue }
-    
+
     var localizedName: String {
         switch self {
         case .nowPlaying: return String(localized: "Now Playing")
@@ -416,6 +417,7 @@ enum MediaControllerType: String, CaseIterable, Identifiable, Defaults.Serializa
         case .spotify: return String(localized: "Spotify")
         case .youtubeMusic: return String(localized: "Youtube Music")
         case .amazonMusic: return String(localized: "Amazon Music")
+        case .custom: return String(localized: "Custom App")
         }
     }
 }
@@ -1060,6 +1062,9 @@ extension Defaults.Keys {
     
     // MARK: Media Controller
     static let mediaController = Key<MediaControllerType>("mediaController", default: defaultMediaController)
+    /// Bundle id targeted by the "Custom App" media source (e.g. com.netease.163music).
+    /// Empty means not configured; the custom controller stays idle until set.
+    static let customMediaBundleID = Key<String>("customMediaBundleID", default: "")
     static let spotifySPDCCookie = Key<String>("spotifySPDCCookie", default: "")
     static let spotifyAuthAccessToken = Key<String>("spotifyAuthAccessToken", default: "")
     static let spotifyAuthAccessTokenExpiration = Key<Double>("spotifyAuthAccessTokenExpiration", default: 0)
