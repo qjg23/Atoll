@@ -21,6 +21,15 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/qjg23/Atoll/releases/latest">
+    <img src="https://img.shields.io/badge/⬇️%20下载%20QQ%20音乐版-Download%20QQ%20Music%20build-1DB954?style=for-the-badge&logo=apple&logoColor=white" alt="下载 QQ 音乐版 / Download QQ Music build"/>
+  </a>
+  <a href="https://github.com/qjg23/Atoll/releases/latest">
+    <img src="https://img.shields.io/github/v/release/qjg23/Atoll?label=最新版本&style=for-the-badge&color=1DB954" alt="最新版本 / Latest release"/>
+  </a>
+</p>
+
+<p align="center">
   <a href="https://github.com/sponsors/Ebullioscopic">
     <img src="https://img.shields.io/badge/Sponsor-Ebullioscopic-ff69b4?style=for-the-badge&logo=github" alt="Sponsor Ebullioscopic"/>
   </a>
